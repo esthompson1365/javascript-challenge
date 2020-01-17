@@ -1,7 +1,7 @@
 function renderTable(dataSet) {
     // get a reference to the tbody tag
     var tbody = d3.select('tbody');
-    
+
     // Find all child <tr> and delete them, emptying the table
     tbody.selectAll('tr').remove()
 
@@ -34,15 +34,21 @@ var filterButton = d3.select('button#filter-btn')
 
 // Listen for click events, and filter the data
 filterButton.on('click', () => {
-    // get date from input
+
+    // get filters from input
     var dateTimeInput = d3.select('input#datetime').property('value')
+    var cityInput = d3.select('input#datetime').property('value')
+    var countryInput = d3.select('input#country').property('value')
+    var shapeInput = d3.select('input#shape').property('value')
     
     // filter the data set (non-permanently)
-    var filteredData = tableData.filter(dataPoint => dataPoint.datetime.startsWith(dateTimeInput))
-
+    var dateFilteredData = tableData.filter(dp => dp.datetime.startsWith(dateTimeInput))
+    var cityFilteredData = dateFilteredData.filter(dp => dp.city === cityInput)
+    var countryFilteredData = cityFilteredData.filter(dp => dp.country === countryInput)
+    var shapeFilteredData = countryFilteredData.filter(dp => dp.shape.startsWith(shapeInput))
+    
     // render the filtered data
-    renderTable(filteredData)
-
+    renderTable(shapeFilteredData)
 });
 
 
